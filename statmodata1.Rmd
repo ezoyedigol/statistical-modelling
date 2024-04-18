@@ -1,0 +1,114 @@
+---
+title: "statmodata1"
+author: "Ezo YEDİGÖL"
+date: "2024-04-18"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+#DATASET-1
+#The data set consists of 100 observations with 4 variables: Sales, Advertising, Price, and Season.
+#Sales, Advertising, and Price are numerical variables, while Season is a categorical variable.
+
+```{r}
+# Example Data Set-1
+set.seed(123)  # Setting seed for reproducibility
+
+# Sample data set size
+n_samples <- 100
+
+# Dependent variable: Sales amount
+sales <- rnorm(n_samples, mean = 100, sd = 20)
+
+# Independent variables: Advertising spend, product price, season
+advertising_spend <- rnorm(n_samples, mean = 500, sd = 100)
+product_price <- rnorm(n_samples, mean = 50, sd = 10)
+season <- sample(c('Spring', 'Summer', 'Fall', 'Winter'), n_samples, replace = TRUE)
+
+# Creating the data frame
+data <- data.frame(Sales = sales, Advertising = advertising_spend, Price = product_price, Season = season)
+
+# Displaying the head of the generated data set
+head(data)
+```
+
+```{r}
+# Structural Characteristics of the Data Set
+# Displaying the structure of the data set
+str(data)
+
+# Summary Statistics for Numerical Variables
+# Displaying summary statistics for numerical variables
+summary(data)
+
+# Graphical Exploratory Data Analysis
+# Histogram of Sales
+hist(data$Sales, main = "Distribution of Sales", xlab = "Sales Amount", ylab = "Frequency")
+
+# Scatterplot of Sales vs. Advertising Spend
+plot(data$Advertising, data$Sales, main = "Sales vs. Advertising Spend", xlab = "Advertising Spend", ylab = "Sales Amount")
+
+# Scatterplot of Sales vs. Product Price
+plot(data$Price, data$Sales, main = "Sales vs. Product Price", xlab = "Product Price", ylab = "Sales Amount")
+
+# Boxplot of Sales by Season
+boxplot(Sales ~ Season, data = data, main = "Sales by Season", xlab = "Season", ylab = "Sales Amount")
+
+# Correlation Matrix
+# Computing the correlation matrix for numerical variables
+cor(data[, c("Sales", "Advertising", "Price")])
+
+# Distribution of Categorical Variable
+# Displaying the distribution of observations across different seasons
+table(data$Season)
+```
+
+```{r}
+# Regression Analysis
+# Modeling sales amount based on advertising spend, product price, and season
+
+# Creating the model
+reg_model <- lm(Sales ~ Advertising + Price + Season, data = data)
+
+# Displaying the model summary
+summary(reg_model)
+```
+
+```{r}
+# ANOVA Analysis
+# Checking the effect of the season factor on sales amount
+
+# Creating the ANOVA model
+anova_model <- lm(Sales ~ Season, data = data)
+
+# Displaying ANOVA results
+anova_result <- anova(anova_model)
+print(anova_result)
+```
+```{r}
+# ANCOVA Analysis
+# Checking the effect of season factor on sales amount controlling for advertising spend and product price
+
+# Creating the ANCOVA model
+ancova_model <- lm(Sales ~ Advertising + Price + Season, data = data)
+
+# Displaying ANCOVA results
+summary(ancova_model)
+```
+```{r}
+#conclusions
+#Regression Analysis Result:
+#None of the variables (advertising spend, product price, and season) had a significant effect on sales amount.
+#The R-squared value is low, indicating that the variables explain only a small portion of the variance in sales amount.
+
+#ANOVA Analysis Result:
+#The season factor does not have a significant effect on sales amount.
+
+#ANCOVA Analysis Result:
+#The results from ANCOVA analysis confirm that there is no significant effect of advertising spend and product price on sales amount, controlling for the season factor.
+
+```
+
+```

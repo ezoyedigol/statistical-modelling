@@ -1,0 +1,114 @@
+---
+title: "statmodata2"
+author: "Ezo YEDİGÖL"
+date: "2024-04-18"
+output:
+  word_document: default
+  pdf_document: default
+---
+#DATASET2
+#The dataset comprises five variables representing employee performance metrics: Salary, Productivity Score, Experience Level, Training Hours, and Teamwork Rating. It consists of 50 observations (employees), and each variable may play a role in determining employee performance and salary.
+```{r}
+# Creating a synthetic data set for a different scenario
+set.seed(123)  # Setting seed for reproducibility
+
+# Sample data set size
+n_samples <- 50
+
+# Dependent variable: Salary
+salary <- rnorm(n_samples, mean = 5000, sd = 1000)
+
+# Independent variables: Productivity Score, Experience Level, Training Hours, Teamwork Rating
+productivity_score <- rnorm(n_samples, mean = 80, sd = 10)
+experience_level <- sample(1:10, n_samples, replace = TRUE)
+training_hours <- rnorm(n_samples, mean = 20, sd = 5)
+teamwork_rating <- sample(1:5, n_samples, replace = TRUE)
+
+# Creating a data frame
+employee_data <- data.frame(Salary = salary, ProductivityScore = productivity_score, ExperienceLevel = experience_level, TrainingHours = training_hours, TeamworkRating = teamwork_rating)
+
+# Showing the head of the created data set
+head(employee_data)
+
+```
+```{r}
+# Exploring the structural characteristics of the data set
+str(employee_data)
+
+# Summary statistics for numerical variables
+summary(employee_data)
+
+# Graphical Exploratory Data Analysis
+hist(employee_data$Salary, main = "Distribution of Salary", xlab = "Salary", ylab = "Frequency")
+hist(employee_data$ProductivityScore, main = "Distribution of Productivity Score", xlab = "Productivity Score", ylab = "Frequency")
+hist(employee_data$ExperienceLevel, main = "Distribution of Experience Level", xlab = "Experience Level", ylab = "Frequency")
+hist(employee_data$TrainingHours, main = "Distribution of Training Hours", xlab = "Training Hours", ylab = "Frequency")
+hist(employee_data$TeamworkRating, main = "Distribution of Teamwork Rating", xlab = "Teamwork Rating", ylab = "Frequency")
+
+plot(employee_data$ProductivityScore, employee_data$Salary, main = "Salary vs. Productivity Score", xlab = "Productivity Score", ylab = "Salary")
+plot(employee_data$ExperienceLevel, employee_data$Salary, main = "Salary vs. Experience Level", xlab = "Experience Level", ylab = "Salary")
+plot(employee_data$TrainingHours, employee_data$Salary, main = "Salary vs. Training Hours", xlab = "Training Hours", ylab = "Salary")
+plot(employee_data$TeamworkRating, employee_data$Salary, main = "Salary vs. Teamwork Rating", xlab = "Teamwork Rating", ylab = "Salary")
+
+```
+
+```{r}
+# Regression Analysis
+# Modeling the relationship between Salary and independent variables
+
+# Model creation
+regression_model <- lm(Salary ~ ProductivityScore + ExperienceLevel + TrainingHours + TeamworkRating, data = employee_data)
+
+# Model summary
+summary(regression_model)
+```
+
+```{r}
+# ANOVA Analysis
+# Testing the significance of the overall model
+
+# ANOVA model creation
+anova_model <- lm(Salary ~ ProductivityScore + ExperienceLevel + TrainingHours + TeamworkRating, data = employee_data)
+
+# ANOVA results
+anova_result <- anova(anova_model)
+print(anova_result)
+
+```
+
+```{r}
+# ANCOVA Analysis
+# Testing the significance of the model with covariates
+
+# ANCOVA model creation
+ancova_model <- lm(Salary ~ ProductivityScore + ExperienceLevel + TrainingHours + TeamworkRating, data = employee_data)
+
+# ANCOVA results
+summary(ancova_model)
+
+```
+
+```{r}
+#conclusions
+#Regression Analysis (regression_model):
+#Intercept (Constant): The intercept represents the expected mean value of Salary when all independent variables are zero. In this model, it's approximately $5393.86.
+
+#Coefficients for Independent Variables:
+#Productivity Score: For each unit increase in Productivity Score, the Salary is expected to decrease by approximately $1.69.
+#Experience Level: For each additional year of Experience Level, the Salary is expected to increase by approximately $97.70.
+#Training Hours: For each additional hour of Training, the Salary is expected to decrease by approximately $28.74.
+#Teamwork Rating: For each unit increase in Teamwork Rating, the Salary is expected to decrease by approximately $96.94.
+
+#ANOVA Analysis (anova_result):
+#The ANOVA table tests the overall significance of the regression model by comparing the variance explained by the model to the residual variance.
+#The p-values associated with each independent variable (Productivity Score, #Experience Level, Training Hours, Teamwork Rating) indicate whether these variables are jointly significant in explaining the variation in Salary.
+#In this case:
+#Experience Level has a p-value of 0.05651, indicating it might be marginally significant.
+#Productivity Score, Training Hours, and Teamwork Rating have p-values above 0.05, suggesting they are not statistically significant in explaining Salary.
+
+#ANCOVA Analysis (ancova_model):
+#The results from ANCOVA are identical to the regression analysis because the model formula and data used are the same.
+#ANCOVA is essentially a regression analysis that includes quantitative and categorical predictors (covariates).
+#Overall, the Experience Level appears to be the most influential variable in predicting Salary, while other variables such as Productivity Score, Training Hours, and Teamwork Rating do not show significant associations with Salary in this analysis. 
+```
+
